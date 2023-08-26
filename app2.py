@@ -39,12 +39,11 @@ def suggestion(question):
     x=[]
     x.append(question)
     xt=tfidf.transform(x)
-    answ = multilabel.inverse_transform(clf.predict(xt))
+    prediction = multilabel.inverse_transform(clf.predict(xt))
 
     suggested_tags = []
-    for tags in answ:
-        for tag in tags:
-            suggested_tags.append(tag)
+    for tags in prediction:
+        suggested_tags.append(tags)
     
     return suggested_tags
 
