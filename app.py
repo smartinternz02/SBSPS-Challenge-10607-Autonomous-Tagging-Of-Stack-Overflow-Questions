@@ -1,37 +1,28 @@
-import pickle
+from flask import Flask, render_template, request, session
+from ml_backend import suggestion, search_stack_overflow, update_visit_count
 
-with open('sklearn_objects.pkl', 'rb') as f:
-    mlb, p = pickle.load(f)
+app = Flask(__name__)
+app.secret_key = 'iXhqJcm23*ojb5bwBLT9QA(('
 
+@app.route('/')
+def index():
+    update_visit_count(session)
+    return render_template('index.html', suggested_tags=None, question_links=None,visit_count=session.get('visit_count', 0))
 
-# predicting the model with samples
-classes = ['.net', 'android', 'asp.net', 'c', 'c#', 'c++', 'css', 'html', 'ios', 'iphone',
- 'java', 'javascript', 'jquery', 'mysql', 'objective-c', 'php', 'python', 'ruby',
- 'ruby-on-rails', 'sql']
+@app.route('/get_tags', methods=['POST'])
+def get_tags():
+    question = request.form['question']
+    suggested_tags = suggestion(question)
+    update_visit_count(session)
+    return render_template('index.html', suggested_tags=suggested_tags, question_links=None, visit_count=session.get('visit_count', 0))
 
-def suggestion(question):
-    x=[]
-    x.append(question)
-    mlb_predictions = p.predict([question])
-    tags = mlb.inverse_transform(mlb_predictions)    
-    suggested_tags = []
+@app.route('/suggest_questions', methods=['POST'])
+def suggest_questions():
+    question = request.form['question']
+    suggested_tags = suggestion(question)
+    question_links = search_stack_overflow(suggested_tags)
+    update_visit_count(session)
+    return render_template('index.html', suggested_tags=suggested_tags, question_links=question_links,visit_count=session.get('visit_count', 0))
 
-    for tag in tags:
-        suggested_tags.append(tag)
-    
-    return suggested_tags
-
-
-def main():
-    # Get the question from the user
-    question = input("Enter your question: ")
-
-    # Predict the tags for the question
-    predicted_tags = suggestion(question)
-
-    # Print the predicted tags
-    print("Suggested tags:", predicted_tags)
-
-
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    app.run(debug=True)
