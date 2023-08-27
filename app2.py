@@ -30,7 +30,7 @@ clf = OneVsRestClassifier(svc)
 clf.fit(X_train, y_train)
 # y_pred = clf.predict(X_test)
 # print(y_pred)
-# pickled_model = pickle.load(open('model.pkl', 'rb'))
+pickled_model = pickle.load(open('tagPredictor.pkl', 'rb'))
 
 
 # predicting the model with samples
@@ -39,7 +39,7 @@ def suggestion(question):
     x=[]
     x.append(question)
     xt=tfidf.transform(x)
-    prediction = multilabel.inverse_transform(clf.predict(xt))
+    prediction = multilabel.inverse_transform(pickled_model.predict(xt))
 
     suggested_tags = []
     for tags in prediction:
