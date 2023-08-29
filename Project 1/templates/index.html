@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Autonomous Tagging System</title>
+</head>
+<body>
+    <header>
+        <h1>Autonomous Tagging System</h1>
+    </header>
+    <main>
+        <section class="tag-input">
+            <h2>Enter your question:</h2>
+            <form action="/get_tags" method="post">
+                <textarea name="question" rows="5" placeholder="Type your question here..."></textarea>
+                <button type="submit">
+                    <span class="shadow"></span>
+                    <span class="edge"></span>
+                    <span class="front text">Suggest Tags</span>
+                </button>
+                <button type="submit" formaction="/suggest_questions">
+                    <span class="shadow"></span>
+                    <span class="edge"></span>
+                    <span class="front text">Suggest Questions</span>
+                </button>
+            </form>
+            <div id="tagSuggestions">
+                {% if suggested_tags %}
+                    Suggested Tags: {{ suggested_tags|join(', ') }}
+                {% endif %}
+            </div>
+            <div id="questionLinks">
+                {% if question_links %}
+                    <h3>Related Questions:</h3>
+                    <ul>
+                        {% for link in question_links %}
+                            <li><a href="{{ link }}" target="_blank">{{ link }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2023 Created by Amritha, Hajna & Shriyash | Visits: {{ visit_count }}</p>
+    </footer>
+</body>
+</html>
