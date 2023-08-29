@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Head content here -->
+</head>
+<body>
+    <header>
+        <!-- Header content here -->
+    </header>
+    <main>
+        <section class="tag-input">
+            <h2>Enter your question:</h2>
+            <form method="post" action="/get_tags">
+                <textarea id="questionInput" name="question" rows="5" placeholder="Type your question here..."></textarea>
+                <button type="submit" id="suggestTagsButton" class="hover-effect suggest-button">Suggest Tags</button>
+            </form>
+            <div id="tagSuggestions" class="tag-suggestions">
+                {% if suggested_tags %}
+                <h3>Suggested Tags:</h3>
+                <ul>
+                    {% for tag in suggested_tags %}
+                    <li>{{ tag }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            <div id="relatedTags" class="tag-suggestions">
+                {% if related_tags %}
+                <h3>Related Tags:</h3>
+                <ul>
+                    {% for tag in related_tags %}
+                    <li>{{ tag }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+        </section>
+    </main>
+    <footer>
+        <!-- Footer content here -->
+    </footer>
+</body>
+</html>
