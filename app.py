@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, session
 from ml_backend import suggestion, search_stack_overflow, update_visit_count
 
 app = Flask(__name__)
-app.secret_key = 'iXhqJcm23*ojb5bwBLT9QA(('
+app.secret_key = 'Put your stackoverflow secret key here'
 
 @app.route('/')
 def index():
